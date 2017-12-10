@@ -16,7 +16,9 @@ const BookCreate = Joi.object()
       .description('genre'),
     description: Joi.string().description('description'),
     publisher: Joi.string().description('publisher'),
-    pages: Joi.string().description('pages'),
+    pages: Joi.number()
+      .integer()
+      .description('pages'),
     image_url: Joi.string()
       .uri()
       .description('image_url'),

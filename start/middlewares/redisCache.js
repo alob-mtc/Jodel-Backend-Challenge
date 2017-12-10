@@ -1,9 +1,8 @@
-import co from 'co-redis'
 import crypto from 'crypto'
 import redis from 'redis'
 import bluebird from 'bluebird'
 
-bluebird.promisifyAll(redis)
+bluebird.promisifyAll(redis.RedisClient.prototype)
 /**
  * getCache
  */
