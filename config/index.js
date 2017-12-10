@@ -1,4 +1,5 @@
 const joi = require('joi')
+const path = require('path')
 
 const envVarsSchema = joi
   .object({
@@ -49,7 +50,7 @@ module.exports = {
     password: envVars.MONGO_PASSWORD,
     host: envVars.MONGO_HOST,
     port: envVars.MONGO_PORT,
-    schemas: './models',
+    schemas: path.resolve(__dirname, '../models'),
     server: {
       poolSize: envVars.MONGO_POOL_SIZE,
     },
