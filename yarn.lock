@@ -2209,10 +2209,6 @@ mongoose-q@^0.1.0:
     mongoose ">=4.1.1"
     q ">=1.4.1"
 
-mongoose-snake-to-camel@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/mongoose-snake-to-camel/-/mongoose-snake-to-camel-0.2.1.tgz#da7995d16d62a2e52570b00f2819a97c0c123f88"
-
 mongoose@>=4.1.1, mongoose@^4.13.6:
   version "4.13.6"
   resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.13.6.tgz#48102f0b0d797a9bd273e581eef16d0505ef3d79"

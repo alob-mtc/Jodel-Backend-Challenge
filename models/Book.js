@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-let schema = new mongoose.Schema({
+const schema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -33,7 +33,5 @@ let schema = new mongoose.Schema({
     default: Date.now,
   },
 })
-// schema.plugin(snakeToCamel)
-// export default mongoose.model('Book', schema)
 
 export default schema

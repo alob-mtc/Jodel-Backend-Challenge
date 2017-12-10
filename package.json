@@ -34,7 +34,6 @@
     "koa-mongoose": "^2.0.0",
     "koa-router": "^7.3.0",
     "mongoose": "^4.13.6",
-    "mongoose-snake-to-camel": "^0.2.1",
     "util": "^0.10.3",
     "uuid": "^3.1.0"
   },
