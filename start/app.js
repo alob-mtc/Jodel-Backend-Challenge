@@ -9,19 +9,21 @@ import config from '../config'
 
 const { ui } = joiSwagger
 const swaggerDoc = toSwaggerDoc(docs)
+const app = new Koa()
 
-export default async () => {
-  const app = new Koa()
-  app.context.db = await loadModels(config.database)
+const dbContext = async () =>
+  (app.context.db = await loadModels(config.database))
 
-  // mount swagger ui in `/swagger`
-  app.use(ui(swaggerDoc, { pathRoot: '/docs', v3: true }))
-  app.use(middlewares())
-  app.use(routes())
-  app.use(allowedMethods())
+dbContext()
 
-  app.on('error', (err, ctx) => {
-    ctx.logger.error(err)
-  })
-  app.listen(config.server.port, config.server.host)
-}
+// mount swagger ui in `/swagger`
+app.use(ui(swaggerDoc, { pathRoot: '/docs', v3: true }))
+app.use(middlewares())
+app.use(routes())
+app.use(allowedMethods())
+
+app.on('error', (err, ctx) => {
+  ctx.logger.error(err)
+})
+
+export default app.listen(config.server.port, config.server.host)

@@ -25,7 +25,6 @@ const BookCreate = Joi.object()
       .description('buy_url'),
     created_at: Joi.date(),
   })
-  .required()
   .description('Book')
 
 const Book = BookCreate.concat(
@@ -66,7 +65,7 @@ export default {
       },
       responses: {
         '200': {
-          description: '文章详情',
+          description: 'A Book',
           schema: Book,
         },
         default: {

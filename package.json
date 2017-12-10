@@ -4,8 +4,8 @@
   "description": "Jodel Challenge for backend job",
   "main": "server.js",
   "scripts": {
-    "test": "jest",
-    "start": "nodemon -r @std/esm server.js | bunyan"
+    "test": "NODE_ENV=test jest",
+    "start": "NODE_ENV=development nodemon server.js | bunyan"
   },
   "repository": {
     "type": "git",
@@ -26,17 +26,20 @@
     "@koa/cors": "^2.2.1",
     "@std/esm": "^0.18.0",
     "bunyan": "^1.8.12",
+    "chance": "^1.0.12",
     "joi": "^13.0.2",
     "joi-to-json-schema": "^3.2.0",
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
     "koa-camelcase-keys": "^1.0.1",
     "koa-compose": "^4.0.0",
-    "koa-joi-swagger": "^1.1.0",
+    "koa-joi-swagger": "https://github.com/codesword/koa-joi-swagger.git",
     "koa-mongoose": "^2.0.0",
     "koa-router": "^7.3.0",
     "lodash": "^4.17.4",
     "mongoose": "^4.13.6",
+    "rosie": "^1.6.0",
+    "supertest": "^3.0.0",
     "swagger-ui-dist": "^3.6.1",
     "util": "^0.10.3",
     "uuid": "^3.1.0"
@@ -47,5 +50,10 @@
   "devDependencies": {
     "jest": "^21.2.1",
     "nodemon": "^1.12.5"
+  },
+  "jest": {
+    "verbose": true,
+    "testEnvironment": "node",
+    "setupTestFrameworkScriptFile": "./setupTests.js"
   }
 }
