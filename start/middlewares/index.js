@@ -9,6 +9,8 @@ import responseTime from './responseTime'
 import requestId from './requestId'
 import logger from './logger'
 import validation from './validation'
+import redisCache from './redisCache'
+
 import docs from '../docs'
 
 const { mixedValidate } = joiSwagger
@@ -27,6 +29,9 @@ const middlewares = () =>
     validation(),
     mixedValidate(docs, {
       onError: (e, ctx) => console.log(e, 'validation error'),
+    }),
+    redisCache({
+      redisURL: config.redis.url,
     }),
   ])
 

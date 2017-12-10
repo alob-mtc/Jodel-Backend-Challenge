@@ -12,7 +12,7 @@ export async function listBooks(ctx) {
     .skip(offset)
     .limit(perPage)
     .exec()
-
+  ctx.logger.info(books)
   ctx.body = {
     data: books,
     total,

@@ -15,6 +15,10 @@ const envVarsSchema = joi
     MONGO_USER: joi.string().default(''),
     MONGO_PASSWORD: joi.string().default(''),
     MONGO_POOL_SIZE: joi.number().default(5),
+    REDIS_PORT: joi.number().default(6379),
+    REDIS_HOST: joi.string().default('127.0.0.1'),
+    REDIS_DB: joi.number().default(0),
+
     LOGGER_LEVEL: joi
       .string()
       .allow(['error', 'warn', 'info', 'verbose', 'debug', 'silly'])
@@ -57,6 +61,14 @@ module.exports = {
     db: {
       native_parser: true,
     },
+  },
+  redis: {
+    host: envVars.REDIS_HOST,
+    port: envVars.REDIS_PORT,
+    db: envVars.REDIS_DB,
+    url: `redis://${envVars.REDIS_HOST}:${envVars.REDIS_PORT}/${
+      envVars.REDIS_DB
+    }`,
   },
   server: {
     port: envVars.PORT,
