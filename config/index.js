@@ -49,7 +49,13 @@ module.exports = {
     password: envVars.MONGO_PASSWORD,
     host: envVars.MONGO_HOST,
     port: envVars.MONGO_PORT,
-    poolSize: envVars.MONGO_POOL_SIZE,
+    schemas: './models',
+    server: {
+      poolSize: envVars.MONGO_POOL_SIZE,
+    },
+    db: {
+      native_parser: true,
+    },
   },
   server: {
     port: envVars.PORT,
