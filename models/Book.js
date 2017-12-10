@@ -20,7 +20,7 @@ const schema = new mongoose.Schema({
     type: String,
   },
   pages: {
-    type: String,
+    type: Number,
   },
   image_url: {
     type: String,
