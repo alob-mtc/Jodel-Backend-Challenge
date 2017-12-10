@@ -1,75 +1,64 @@
-import Debug from 'debug'
-import joi2jsonSchema from 'joi-to-json-schema'
-import cloneDeepWith from 'lodash/cloneDeepWith'
-export const debug = Debug('joi-swagger')
+import joiSwagger from 'koa-joi-swagger'
 
-const ctx2paramMap = {
-  pathParams: 'path',
-  query: 'query',
-  headers: 'header',
-  body: 'body',
+const { Joi } = joiSwagger.default
+
+export function page(schema) {
+  return Joi.object().keys({
+    data: Joi.array()
+      .items(schema)
+      .required()
+      .description('page list'),
+    total: Joi.number()
+      .integer()
+      .required()
+      .description('total item count'),
+    per_page: Joi.number()
+      .integer()
+      .required()
+      .description('item count per page'),
+    page: Joi.number()
+      .integer()
+      .required()
+      .description('page number, starts with 1'),
+  })
 }
 
-const joiKey = 'jsonSchema'
-
-export function toSwaggerParams(joiMap) {
-  let params = []
-  Object.keys(joiMap).forEach(key => {
-    const fullJsonSchema = joi2jsonSchema(joiMap[key])
-    if (key === 'body') {
-      const paramType = ctx2paramMap[key]
-      const param = {
-        name: key,
-        allowEmptyValue: true,
-        in: paramType,
-        description: fullJsonSchema.description,
-        required: true,
-      }
-      param.schema = fullJsonSchema
-      params.push(param)
-    } else {
-      for (let name in fullJsonSchema.properties) {
-        const jsonSchema = fullJsonSchema.properties[name]
-        const paramType = ctx2paramMap[key]
-        const param = {
-          name,
-          allowEmptyValue: true,
-          in: paramType,
-          required:
-            fullJsonSchema.required &&
-            fullJsonSchema.required.indexOf(name) >= 0,
-        }
-        if (paramType === 'body') {
-          param.schema = jsonSchema
-        } else {
-          Object.assign(param, jsonSchema)
-        }
-        params.push(param)
-      }
-    }
+export const Err = Joi.object()
+  .json()
+  .keys({
+    message: Joi.string(),
+    data: Joi.object(),
   })
-  params[joiKey] = joiMap
-  return params
+
+export function pageQuery(schema = Joi.object()) {
+  return Joi.object()
+    .keys({
+      page: Joi.number()
+        .integer()
+        .optional()
+        .default(1)
+        .description('page(starts with 1)'),
+      per_page: Joi.number()
+        .integer()
+        .optional()
+        .default(10)
+        .description('per page'),
+      genre: Joi.string()
+        .optional()
+        .description('genre'),
+      author: Joi.string()
+        .optional()
+        .description('author'),
+      title: Joi.string()
+        .optional()
+        .description('title'),
+    })
+    .concat(schema)
 }
 
-export function toSwaggerDoc(mixedSchema) {
-  const swaggerDoc = cloneDeepWith(mixedSchema, value => {
-    if (typeof value === 'object' && value.isJoi === true) {
-      return value.clone()
-    }
-  })
-  for (let path in swaggerDoc.paths) {
-    const pathInfo = swaggerDoc.paths[path]
-    for (let method in pathInfo) {
-      const methodInfo = pathInfo[method]
-      methodInfo.parameters = toSwaggerParams(methodInfo.parameters)
-      for (let status in methodInfo.responses) {
-        const resInfo = methodInfo.responses[status]
-        if (resInfo.schema && resInfo.schema.isJoi) {
-          resInfo.schema = joi2jsonSchema(resInfo.schema)
-        }
-      }
-    }
-  }
-  return swaggerDoc
+export const errorResponse = {
+  default: {
+    description: 'Error Response(4xx)',
+    schema: Err,
+  },
 }
