@@ -28,7 +28,7 @@ const schema = new mongoose.Schema({
   buy_url: {
     type: String,
   },
-  create_date: {
+  created_at: {
     type: Date,
     default: Date.now,
   },

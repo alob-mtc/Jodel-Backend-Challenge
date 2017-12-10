@@ -27,7 +27,7 @@ const app = async () => {
   koa.on('error', (err, ctx) => {
     ctx.logger.error('server error', err, ctx)
   })
-  koa.listen(3000)
+  koa.listen(config.server.port, config.server.host)
 }
 
 export default app
