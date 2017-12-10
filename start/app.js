@@ -1,8 +1,8 @@
 import Koa from 'koa'
 import joiSwagger from 'koa-joi-swagger'
-import { toSwaggerDoc } from './docs/utils'
+import toSwaggerDoc from '../lib/toSwaggerDoc'
 import docs from './docs'
-import router from './routes'
+import routes, { allowedMethods } from './routes'
 import middlewares from './middlewares'
 import loadModels from '../lib/loadModels'
 import config from '../config'
@@ -10,19 +10,18 @@ import config from '../config'
 const { ui } = joiSwagger
 const swaggerDoc = toSwaggerDoc(docs)
 
-const app = async () => {
-  const koa = new Koa()
-  koa.context.db = await loadModels(config.database)
+export default async () => {
+  const app = new Koa()
+  app.context.db = await loadModels(config.database)
+
   // mount swagger ui in `/swagger`
-  koa.use(ui(swaggerDoc, { pathRoot: '/docs', v3: true }))
-  koa.use(middlewares())
-  koa.use(router.routes())
-  koa.use(router.allowedMethods())
+  app.use(ui(swaggerDoc, { pathRoot: '/docs', v3: true }))
+  app.use(middlewares())
+  app.use(routes())
+  app.use(allowedMethods())
 
-  koa.on('error', (err, ctx) => {
-    ctx.logger.error(err, 'Server Error')
+  app.on('error', (err, ctx) => {
+    ctx.logger.error(err)
   })
-  koa.listen(config.server.port, config.server.host)
+  app.listen(config.server.port, config.server.host)
 }
-
-export default app

@@ -10,4 +10,5 @@ router.prefix('/v1')
 router.get('/books', listBooks)
 router.post('/books', storeBook)
 
-export default router
+export const allowedMethods = () => router.allowedMethods()
+export default () => router.routes()
