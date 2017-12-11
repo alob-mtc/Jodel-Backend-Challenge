@@ -2,44 +2,92 @@
 
 Welcome!
 
-For this code challenge we would like you to write a simple NodeJS REST API project or just fork one of the existing projects on Github (https://github.com/ealeksandrov/NodeAPI or https://github.com/scotch-io/node-api), and then extend it with some functionalities below.
+This is a simple book store api. It exposes 2 endpoints
 
+* GET /v1/books: to retrieve a piginated list of books. Books can also by
+  filtered by their title, author, genre or a combination of any of the 3 fields
+  eg /v1/books?title=mytitle&author=jodel
+* POST /v1/books: creates a new book provided the payload is valid
 
-## Adding MongoDB
+You can go to the docs at http://localhost:3000/docs (after you run the app) for
+more information
 
-Write an API endpoint for saving a JSON object in MongoDB. Mongo DB should be running in a Docker Container.
+## Running the app
 
-- Input:
-  - JSON Object
-- Output:
-  - 200 OK or error code
+### Without docker-compose
 
-Write also an API endpoint for getting a list of all previously saved JSON objects filtered by some field’s value, in pages, N objects per page:
+* Start mongodb server on your local machine via brew (brew services start
+  mongo)
+* Start redis server on your local machine via brew (brew services start redis)
+* Ensure you have node 8+ installed on your local machine
+* Run `npm install` or `yarn`
+* Start app via `npm start` or `yarn start`
+* Visit localhost:3000
 
-- Input:
-  - field’s value
-  - page number
-- Output:
-  - list of JSON objects (no more than N)
+### Running Tests
 
+* Run `yarn test` or `npm test`
 
-## Adding Tests
+## Running app with docker-compose
 
-Write end-to-end test(s) for these 2 endpoints.
+* Use `docker-compose up web` or just run `make run`(if you have make installed)
 
-Tests should be rerunnable and independent of their execution order. Make sure you test the most tricky cases.
+### Running test with docker-compose
 
+* Use `docker-compose run web yarn test` or `make` or `make test`
 
-## Adding Caching
+## Seeding the db
 
-Start Redis in Docker (same way as Mongo) and implement Redis caching for the second endpoint (get list).
+The app comes with a book generation seed script.
 
+* Run `make seed` to create 5 books in the db.
+* Run `docker-compose run web yarn seed x` to create x number of books
 
-## Running everything
+## Caching
 
-Ensure that we're able to setup and run everything with a task runner or a similar tool.
+Redis is used to implement caching of `GET /v1/books`. The caching functionality
+was added as a middleware. You can find the middleware
+[here](/start/middlewares/redisCache.js)
 
+## Folder structure
 
-## How to deliver the results
-
-Fork this repo and once you're done send us a link to a repo with your solution. The result should be your own repository on Github with instructions how to run tests.
+├── Dockerfile
+├── Makefile
+├── README.md
+├── config
+│ └── index.js
+├── controllers
+│ ├── BookController.js
+│ └── BookController.spec.js
+├── db
+│ ├── factories
+│ │ └── Book.js
+│ └── seeds
+│ └── index.js
+├── docker-compose.override.yml
+├── docker-compose.prod.yml
+├── docker-compose.yml
+├── file.logger
+├── lib
+│ ├── loadModels.js
+│ └── toSwaggerDoc.js
+├── models
+│ └── Book.js
+├── package.json
+├── server.js
+├── setupTests.js
+├── start
+│ ├── app.js
+│ ├── docs
+│ │ ├── books.js
+│ │ ├── index.js
+│ │ └── utils.js
+│ ├── middlewares
+│ │ ├── index.js
+│ │ ├── logger.js
+│ │ ├── redisCache.js
+│ │ ├── requestId.js
+│ │ ├── responseTime.js
+│ │ └── validation.js
+│ └── routes.js
+└── yarn.lock
