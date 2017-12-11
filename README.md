@@ -51,43 +51,56 @@ was added as a middleware. You can find the middleware
 
 ## Folder structure
 
+```
+.
 ├── Dockerfile
 ├── Makefile
 ├── README.md
 ├── config
-│ └── index.js
+│   └── index.js
 ├── controllers
-│ ├── BookController.js
-│ └── BookController.spec.js
+│   ├── BookController.js
+│   └── BookController.spec.js
 ├── db
-│ ├── factories
-│ │ └── Book.js
-│ └── seeds
-│ └── index.js
+│   ├── factories
+│   │   └── Book.js
+│   └── seeds
+│       └── index.js
 ├── docker-compose.override.yml
 ├── docker-compose.prod.yml
 ├── docker-compose.yml
 ├── file.logger
 ├── lib
-│ ├── loadModels.js
-│ └── toSwaggerDoc.js
+│   ├── loadModels.js
+│   └── toSwaggerDoc.js
+├── md-tree
 ├── models
-│ └── Book.js
+│   └── Book.js
 ├── package.json
 ├── server.js
 ├── setupTests.js
 ├── start
-│ ├── app.js
-│ ├── docs
-│ │ ├── books.js
-│ │ ├── index.js
-│ │ └── utils.js
-│ ├── middlewares
-│ │ ├── index.js
-│ │ ├── logger.js
-│ │ ├── redisCache.js
-│ │ ├── requestId.js
-│ │ ├── responseTime.js
-│ │ └── validation.js
-│ └── routes.js
+│   ├── app.js
+│   ├── docs
+│   │   ├── books.js
+│   │   ├── index.js
+│   │   └── utils.js
+│   ├── middlewares
+│   │   ├── index.js
+│   │   ├── logger.js
+│   │   ├── redisCache.js
+│   │   ├── requestId.js
+│   │   ├── responseTime.js
+│   │   └── validation.js
+│   └── routes.js
 └── yarn.lock
+```
+
+## Tools and framework used
+
+* Koa - REST API framework
+* Docker
+* Swagger - generating docs
+* MongoDB - database
+* Redis - response caching
+* Jest - testing
