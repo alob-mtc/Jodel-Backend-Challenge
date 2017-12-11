@@ -4,7 +4,6 @@ services:
   web:
     environment:
       NODE_ENV: developement
-      MONGO_USER: jodel
       MONGO_HOST: mongo
       MONGO_PORT: 27017
       MONGO_DB: jodelBookStore
@@ -16,14 +15,12 @@ services:
 
     build: .
     image: codesword/jodel-challenge
-    command: start
-    volumes:
-      - .:/app
-      - /app/node_modules
     ports:
       - "3000:3000"
     depends_on:
       mongo:
+        condition: service_healthy
+      redis:
         condition: service_healthy
   mongo:
     image: mongo
@@ -34,7 +31,7 @@ services:
     volumes:
       - mongo-volume:/data/db
   redis:
-    image: redis
+    image: healthcheck/redis
     ports:
       - "6379:6379"
     volumes:

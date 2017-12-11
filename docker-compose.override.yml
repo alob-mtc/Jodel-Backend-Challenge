@@ -1,0 +1,8 @@
+version: "2.1"
+services:
+  web:
+    volumes:
+      - .:/app
+      - /app/node_modules
+    build: .
+    command: yarn start
