@@ -4,18 +4,16 @@
   "description": "Jodel Challenge for backend job",
   "main": "server.js",
   "scripts": {
-    "test": "NODE_ENV=test jest",
-    "start": "NODE_ENV=development nodemon server.js | bunyan"
+    "test": "NODE_ENV=test jest --forceExit && exit",
+    "start": "NODE_ENV=development nodemon server.js | bunyan",
+    "serve": "NODE_ENV=production node server.js",
+    "seed": "NODE_ENV=developement node -r '@std/esm' db/seeds/index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/codesword/Jodel-Backend-Challenge.git"
   },
-  "keywords": [
-    "jodel",
-    "koa",
-    "nodejs"
-  ],
+  "keywords": ["jodel", "koa", "nodejs"],
   "author": "dyoungikem@gmail.com",
   "license": "ISC",
   "bugs": {
