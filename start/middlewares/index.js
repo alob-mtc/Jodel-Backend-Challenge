@@ -15,7 +15,7 @@ import docs from '../docs'
 
 const { mixedValidate } = joiSwagger
 
-const log = bunyan.createLogger({ name: 'book', src: true })
+const log = bunyan.createLogger(config.logger)
 
 const middlewares = () =>
   koaCompose([
@@ -28,7 +28,7 @@ const middlewares = () =>
     }),
     validation(),
     mixedValidate(docs, {
-      onError: (e, ctx) => console.log(e, 'validation error'),
+      onError: e => log.info(e, 'validation error'),
     }),
     redisCache({
       redisURL: config.redis.url,

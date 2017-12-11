@@ -23,13 +23,11 @@ const envVarsSchema = joi
       .string()
       .allow(['error', 'warn', 'info', 'verbose', 'debug', 'silly'])
       .default('info'),
-    LOGGER_ENABLED: joi
-      .boolean()
-      .truthy('TRUE')
-      .truthy('true')
-      .falsy('FALSE')
-      .falsy('false')
-      .default(true),
+    LOGGER_STREAM: joi
+      .string()
+      .allow(['stream', 'file'])
+      .default('stream'),
+    LOGGER_NAME: joi.string().default('jodel-challenge'),
   })
   .unknown()
   .required()
@@ -45,8 +43,19 @@ module.exports = {
   isTest: envVars.NODE_ENV === 'test',
   isDevelopment: envVars.NODE_ENV === 'development',
   logger: {
-    level: envVars.LOGGER_LEVEL,
-    enabled: envVars.LOGGER_ENABLED,
+    name: envVars.LOGGER_NAME,
+    src: true,
+    streams: (() => {
+      const stream = {
+        level: envVars.LOGGER_LEVEL,
+      }
+      if (envVars.LOGGER_STREAM === 'stream') {
+        stream.stream = process.stdout
+      } else {
+        stream.path = 'file.logger'
+      }
+      return [stream]
+    })(),
   },
   database: {
     name: envVars.MONGO_DB,

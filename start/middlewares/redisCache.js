@@ -49,7 +49,6 @@ const redisCache = ({
   const redisClient = redis.createClient(redisURL)
   redisClient.on('error', error => {
     redisAvailable = false
-    onerror(error)
   })
   redisClient.on('end', () => {
     redisAvailable = false
@@ -82,10 +81,11 @@ const redisCache = ({
     } catch (e) {}
 
     await next()
-
-    try {
-      await setCache(redisClient, ctx, key, expire)
-    } catch (e) {}
+    if (redisAvailable) {
+      try {
+        await setCache(redisClient, ctx, key, expire)
+      } catch (e) {}
+    }
   }
 }
 
